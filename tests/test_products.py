@@ -12,7 +12,10 @@ async def test_create_product(client):
 async def test_get_products(client):
     response = await client.get("/api/v1/products/")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    data = response.json()
+    assert "items" in data
+    assert "total" in data
+    assert isinstance(data["items"], list)
 
 @pytest.mark.asyncio
 async def test_get_product(client):
