@@ -6,4 +6,5 @@ pytest
 httpx
 sqlalchemy
 aiosqlite
+slowapi
 
