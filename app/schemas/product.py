@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional
+from typing import Optional, List
 
 class ProductBase(BaseModel):
     title: str = Field(..., json_schema_extra={"example": "Smartphone"})
