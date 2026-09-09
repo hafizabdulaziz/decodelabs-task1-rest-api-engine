@@ -1,16 +1,15 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class ProductBase(BaseModel):
-    name: str = Field(..., example="Smartphone")
-    description: Optional[str] = Field(None, example="A powerful smartphone")
-    price: float = Field(..., gt=0, example=999.99)
+    name: str = Field(..., json_schema_extra={"example": "Smartphone"})
+    description: Optional[str] = Field(None, json_schema_extra={"example": "A powerful smartphone"})
+    price: float = Field(..., gt=0, json_schema_extra={"example": 999.99})
 
 class ProductCreate(ProductBase):
     pass
 
 class Product(ProductBase):
-    id: int = Field(..., example=1)
+    id: int = Field(..., json_schema_extra={"example": 1})
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
