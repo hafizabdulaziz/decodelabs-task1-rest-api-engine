@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi import APIRouter, HTTPException, Depends, Query, Request
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.product import Product, ProductCreate, ProductPaginated
 from app.db.store import store
 from app.db.session import async_session
+from app.main import limiter
 
 router = APIRouter()
 
@@ -12,7 +13,8 @@ async def get_db():
         yield session
 
 @router.post("/", response_model=Product)
-async def create_product(product_in: ProductCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def create_product(request: Request, product_in: ProductCreate, db: AsyncSession = Depends(get_db)):
     return await store.create(db, product_in)
 
 @router.get("/", response_model=ProductPaginated)
