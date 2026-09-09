@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.product import Product, ProductCreate, ProductPaginated
 from app.db.store import store
 from app.db.session import async_session
-from app.main import limiter
+from app.core.limiter import limiter
 
 router = APIRouter()
 
