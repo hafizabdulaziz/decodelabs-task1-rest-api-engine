@@ -1,21 +1,22 @@
-from typing import List, Dict, Optional
-from app.schemas.product import Product
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from app.db.models import Product as ProductModel
+from app.schemas.product import Product as ProductSchema
 
 class ProductStore:
-    def __init__(self):
-        self._products: Dict[int, Product] = {}
-        self._next_id = 1
-
-    def create(self, product_data: dict) -> Product:
-        product = Product(id=self._next_id, **product_data)
-        self._products[self._next_id] = product
-        self._next_id += 1
+    async def create(self, db: AsyncSession, product_data: ProductSchema) -> ProductModel:
+        product = ProductModel(**product_data.dict())
+        db.add(product)
+        await db.commit()
+        await db.refresh(product)
         return product
 
-    def get_all(self) -> List[Product]:
-        return list(self._products.values())
+    async def get_all(self, db: AsyncSession) -> list[ProductModel]:
+        result = await db.execute(select(ProductModel))
+        return result.scalars().all()
 
-    def get_by_id(self, product_id: int) -> Optional[Product]:
-        return self._products.get(product_id)
+    async def get_by_id(self, db: AsyncSession, product_id: int) -> Optional[ProductModel]:
+        result = await db.execute(select(ProductModel).filter(ProductModel.id == product_id))
+        return result.scalars().first()
 
 store = ProductStore()
