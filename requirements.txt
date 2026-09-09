@@ -7,4 +7,5 @@ httpx
 sqlalchemy
 aiosqlite
 slowapi
+loguru
 
