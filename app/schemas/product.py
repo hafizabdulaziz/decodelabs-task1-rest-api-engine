@@ -13,3 +13,9 @@ class Product(ProductBase):
     id: int = Field(..., json_schema_extra={"example": 1})
 
     model_config = ConfigDict(from_attributes=True)
+
+class ProductPaginated(BaseModel):
+    total: int
+    page: int
+    size: int
+    items: List[Product]
