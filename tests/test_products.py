@@ -26,3 +26,37 @@ async def test_get_product(client):
     assert response.status_code == 200
     assert response.json()["title"] == "Prod_Unique"
 
+@pytest.mark.asyncio
+async def test_get_product_not_found(client):
+    response = await client.get("/api/v1/products/999999")
+    assert response.status_code == 404
+
+@pytest.mark.asyncio
+async def test_validation_errors(client):
+    # Missing title
+    response = await client.post("/api/v1/products/", json={"price": 10.5})
+    assert response.status_code == 422
+
+    # Negative price
+    response = await client.post("/api/v1/products/", json={"title": "Bad Price", "price": -5.0})
+    assert response.status_code == 422
+
+@pytest.mark.asyncio
+async def test_filtering_and_pagination(client):
+    # Create some items with titles
+    await client.post("/api/v1/products/", json={"title": "Laptop", "description": "Electronics item", "price": 1200.0})
+    await client.post("/api/v1/products/", json={"title": "Mobile Phone", "description": "Electronics smartphone", "price": 800.0})
+
+    # Search for Laptop
+    response = await client.get("/api/v1/products/?search=Laptop")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] >= 1
+    assert any(item["title"] == "Laptop" for item in data["items"])
+
+    # Sorting
+    response = await client.get("/api/v1/products/?sort_by=price_desc")
+    assert response.status_code == 200
+    data = response.json()
+    if len(data["items"]) >= 2:
+        assert data["items"][0]["price"] >= data["items"][1]["price"]
