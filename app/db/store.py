@@ -6,7 +6,7 @@ from app.schemas.product import Product as ProductSchema
 
 class ProductStore:
     async def create(self, db: AsyncSession, product_data: ProductSchema) -> ProductModel:
-        product = ProductModel(**product_data.dict())
+        product = ProductModel(**product_data.model_dump())
         db.add(product)
         await db.commit()
         await db.refresh(product)

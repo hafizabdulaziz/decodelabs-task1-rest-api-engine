@@ -2,10 +2,10 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_create_product(client):
-    response = await client.post("/api/v1/products/", json={"name": "Test Product", "description": "Test Desc", "price": 10.5})
+    response = await client.post("/api/v1/products/", json={"title": "Test Product", "description": "Test Desc", "price": 10.5})
     assert response.status_code == 200
     data = response.json()
-    assert data["name"] == "Test Product"
+    assert data["title"] == "Test Product"
     assert "id" in data
 
 @pytest.mark.asyncio
@@ -17,7 +17,9 @@ async def test_get_products(client):
 @pytest.mark.asyncio
 async def test_get_product(client):
     # Create product first
-    await client.post("/api/v1/products/", json={"name": "Prod_Unique", "price": 5.0})
-    response = await client.get("/api/v1/products/2")
+    post_response = await client.post("/api/v1/products/", json={"title": "Prod_Unique", "price": 5.0})
+    product_id = post_response.json()["id"]
+    response = await client.get(f"/api/v1/products/{product_id}")
     assert response.status_code == 200
-    assert response.json()["name"] == "Prod_Unique"
+    assert response.json()["title"] == "Prod_Unique"
+

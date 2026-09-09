@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class ProductBase(BaseModel):
-    name: str = Field(..., json_schema_extra={"example": "Smartphone"})
+    title: str = Field(..., json_schema_extra={"example": "Smartphone"})
     description: Optional[str] = Field(None, json_schema_extra={"example": "A powerful smartphone"})
     price: float = Field(..., gt=0, json_schema_extra={"example": 999.99})
 
