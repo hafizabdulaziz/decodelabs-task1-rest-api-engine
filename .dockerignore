@@ -1,6 +1,8 @@
-__pycache__/
+__pycache__
+*.pyc
+*.pyo
 .env
-.git/
-.venv/
-*.db
-.pytest_cache/
+.venv
+venv
+.git
+.pytest_cache
