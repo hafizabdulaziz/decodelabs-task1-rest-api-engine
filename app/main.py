@@ -11,7 +11,9 @@ from slowapi.errors import RateLimitExceeded
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.api.v1.products import router as products_router
-from app.db.session import engine, Base
+from app.db.session import engine, Base, async_session
+from app.db.models import Product
+from sqlalchemy import select
 
 # Setup Loguru
 logger.remove()
@@ -22,6 +24,17 @@ async def lifespan(app: FastAPI):
     # Startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        
+    # Seed Data
+    async with async_session() as session:
+        result = await session.execute(select(Product))
+        if not result.scalars().first():
+            products = [
+                Product(title="Laptop", description="High performance laptop", price=1200.0, category="Electronics", stock=5),
+                Product(title="Mouse", description="Wireless mouse", price=25.0, category="Electronics", stock=50),
+            ]
+            session.add_all(products)
+            await session.commit()
     yield
     # Shutdown
 
