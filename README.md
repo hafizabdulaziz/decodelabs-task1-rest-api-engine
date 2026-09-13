@@ -1,4 +1,4 @@
-# 🚀 REST API Engine — Portfolio-Grade Async Microservice
+# FastProducts — RESTful Product Catalog Service
 
 ![CI/CD Pipeline](https://img.shields.io/github/actions/workflow/status/hafizabdulaziz/decodelabs-task1-rest-api-engine/ci.yml?branch=main&style=flat-square&logo=github-actions&label=CI%2FCD%20Build)
 ![Python Version](https://img.shields.io/badge/python-3.11-blue.svg?style=flat-square&logo=python)
