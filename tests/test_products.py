@@ -60,3 +60,11 @@ async def test_filtering_and_pagination(client):
     data = response.json()
     if len(data["items"]) >= 2:
         assert data["items"][0]["price"] >= data["items"][1]["price"]
+
+@pytest.mark.asyncio
+async def test_sanitized_query_params(client):
+    # Pass price with currency symbol, should sanitize and work
+    response = await client.get("/api/v1/products/?min_price=100$&max_price=2000$")
+    assert response.status_code == 200
+    data = response.json()
+    assert "items" in data
