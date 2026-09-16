@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "sqlite+aiosqlite:///:memory:"
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.11
