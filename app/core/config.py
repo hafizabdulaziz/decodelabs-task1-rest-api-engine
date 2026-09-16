@@ -4,6 +4,6 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "REST Engine"
     API_V1_STR: str = "/api/v1"
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra='ignore')
 
 settings = Settings()
