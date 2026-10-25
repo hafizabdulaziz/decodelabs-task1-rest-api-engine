@@ -35,7 +35,7 @@ async def get_products(
     search: Optional[str] = None,
     min_price: Optional[str] = Query(None, description="Minimum price (e.g., 100 or '100$')"),
     max_price: Optional[str] = Query(None, description="Maximum price (e.g., 500 or '500$')"),
-    sort_by: Optional[str] = Query(None, enum=["price_asc", "price_desc", "created_at"]),
+    sort_by: Optional[str] = Query(None, description="Sort field (price_asc, price_desc, created_at)"),
     page: int = Query(1, ge=1, description="Page number"),
     size: int = Query(10, ge=1, le=100, description="Page size")
 ):
