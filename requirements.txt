@@ -1,6 +1,7 @@
 fastapi
 uvicorn
-sqlalchemy
+sqlalchemy[asyncio]
+greenlet
 aiosqlite
 argon2-cffi
 passlib[argon2]
